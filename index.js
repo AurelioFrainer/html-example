@@ -17,7 +17,7 @@ function getIconCard(iconDescription, color) {
   const div = document.createElement("div");
   const icon = document.createElement("span");
 
-  div.style = "padding-left: 20px; padding-right: 32px";
+  div.style = "padding-left: 5px; padding-right: 32px";
 
   icon.className = "material-symbols-outlined";
   icon.style = `font-size: 48px; color: ${color}`;
@@ -63,7 +63,7 @@ function getInformation(title, subtitle, postedIn) {
 function setCard(iconDescription, iconColor, title, subtitle, postedIn) {
   const container = document.getElementById("create-cards");
   const div = document.createElement("div");
-  div.style = "display: flex; align-items: center; padding-top: 18px";
+  div.style = "display: flex; align-items: center; padding-top: 25px";
 
   const icon = getIconCard(iconDescription, iconColor);
   const info = getInformation(title, subtitle, postedIn);
