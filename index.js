@@ -97,8 +97,7 @@ function addDaysInDare(datein, days) {
 // controi todos os cards
 // postedIn = data vinda do servidor
 function appendCards(postedIn, city) {
-  //postedIn = new Date(postedIn);
-  postedIn = new Date("2024-05-05 15:33");
+  postedIn = new Date(postedIn);
 
   const today = Date.now();
 
