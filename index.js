@@ -17,10 +17,10 @@ function getIconCard(iconDescription, color) {
   const div = document.createElement("div");
   const icon = document.createElement("span");
 
-  div.style = "padding-left: 5px; padding-right: 32px";
+  div.style = "padding-left: 5px; padding-right: 32px; overflow-x: hidden;";
 
   icon.className = "material-symbols-outlined";
-  icon.style = `font-size: 48px; color: ${color}`;
+  icon.style = `font-size: 48px; overflow-x: hidden; color: ${color}`;
   icon.innerText = ` ${iconDescription} `;
 
   div.appendChild(icon);
@@ -63,11 +63,12 @@ function getInformation(title, subtitle, postedIn) {
 function setCard(iconDescription, iconColor, title, subtitle, postedIn) {
   const container = document.getElementById("create-cards");
   const div = document.createElement("div");
-  div.style = "display: flex; align-items: center; padding-top: 25px";
+  div.style =
+    "display: flex; overflow-x: hidden; align-items: center; padding-top: 25px";
 
   const icon = getIconCard(iconDescription, iconColor);
   const info = getInformation(title, subtitle, postedIn);
-  info.style = "width: 100%; text-align: start";
+  info.style = "width: 100%; overflow-x: hidden; text-align: start";
   div.appendChild(icon);
   div.appendChild(info);
 
