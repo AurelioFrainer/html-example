@@ -3,9 +3,76 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="./index.css" />
+    <title>PrimeLog Tracking</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
   </head>
   <body>
-    <h1>Pagina Teste</h1>
+    <header>
+      <div class="container header-container">
+        <div class="menu-icon">
+          <span class="material-symbols-outlined">menu</span>
+        </div>
+        <div class="logo">
+          <img src="./images/rastreiocerto.png" alt="Rastreio Certo Logo" />
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container" id="header-container">
+          <h1>Rastreie suas encomendas gratuitamente</h1>
+          <p>Sua mercadoria em movimento constante conosco!</p>
+          <form id="trackingForm">
+            <input
+              type="text"
+              id="tracking-number"
+              placeholder="Digite o código de rastreio"
+            />
+            <button type="submit">Pesquisar</button>
+          </form>
+          <div id="tracking-result"></div>
+          <div id="create-cards"></div>
+        </div>
+      </section>
+
+      <section class="features">
+        <div class="container">
+          <div class="feature">
+            <h2>Sobre nós <span></span></h2>
+            <p>
+              Focamos em fornecer excelentes serviços de rastreamento para seus
+              pacotes, com informações de rastreamento sempre atualizadas.
+            </p>
+          </div>
+          <div class="feature">
+            <h2>Segurança <span></span></h2>
+            <p>
+              Somos comprometidos com a segurança de seus pacotes, mantendo
+              rastreamentos e trabalhos de extrema qualidade.
+            </p>
+          </div>
+          <div class="feature">
+            <h2>Velocidade <span></span></h2>
+            <p>
+              Além do nosso sistema de rastreio, temos a entrega mais rápida do
+              Brasil, com uma equipe de profissionais altamente qualificados.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 PrimeLog Tracking. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+    <script src="./index.js"></script>
   </body>
 </html>
