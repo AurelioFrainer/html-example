@@ -64,6 +64,7 @@ header {
   color: #333;
   padding: 70px 0 10px; /* Add top padding to compensate for fixed header */
   text-align: center; /* Centralizar o conteúdo */
+  overflow-x: hidden;
 }
 
 .hero h1 {
@@ -117,6 +118,7 @@ header {
   background-color: #ffffff;
   padding: 10px 0;
   text-align: center;
+  overflow-x: hidden;
 }
 
 .feature {
@@ -146,6 +148,7 @@ header {
 footer {
   background-color: #fff;
   color: #8c8a8a;
+  overflow-x: hidden;
   text-align: center;
   padding: 20px 0;
   border-top: 1px solid #c8cdda
@@ -158,11 +161,13 @@ footer p {
 #tracking-result {
   padding-top: 1.2rem;
   font-size: 1.4rem;
+  overflow-x: hidden;
 }
 
 .tracking-result-error {
   color: red;
   font-weight: 800;
+  overflow-x: hidden;
 }
 
 @media (max-width: 400px) {
