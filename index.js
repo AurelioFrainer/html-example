@@ -143,18 +143,6 @@ function appendCards(postedIn, city) {
         true
       );
     }
-
-    // card no sexto dia
-    if (i === 5) {
-      setCard(
-        TROLLEY_ICON,
-        COLOR_ORANGE_ICON,
-        TROLLEY,
-        "",
-        getFormatDate(addDaysInDare(postedIn, i), true),
-        true
-      );
-    }
   }
 }
 
