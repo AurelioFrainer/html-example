@@ -73,14 +73,6 @@ header {
   text-align: left; /* Alinhar texto à esquerda */
 }
 
-#general-title {
-  font-size: 2.8rem; /* Definir tamanho da fonte como 24px */
-  margin-bottom: 10px;
-  font-weight: bold;
-  line-height: 60px; /* Definir altura da linha como 32px */
-  text-align: left; /* Alinhar texto à esquerda */
-}
-
 .hero p {
   font-size: 14px; /* Definir tamanho da fonte como 14px */
   margin-bottom: 20px;
@@ -172,9 +164,9 @@ footer p {
 }
 
 @media (max-width: 400px) {
-  .hero h1 {
+  /* .hero h1 {
     font-size: 1.2em; /* Menor para melhor ajuste em telas pequenas */
-  }
+  } */
 
   .hero p {
     font-size: 14px; /* Ajustar o tamanho da fonte para 14px em telas pequenas */
