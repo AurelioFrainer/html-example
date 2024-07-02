@@ -1,9 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-
 body {
-  font-family: "Lato", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Lato", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   margin: 0;
   padding: 0;
   background-color: #ffffff;
@@ -12,8 +9,8 @@ body {
 }
 
 .container {
-  width: 90%; /* Ajustado para melhor visualização em dispositivos móveis */
-  max-width: 600px; /* Limite de largura para dispositivos grandes */
+  width: 90%;
+  max-width: 1200px;
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
@@ -24,7 +21,7 @@ header {
   position: fixed;
   width: 100%;
   top: 0;
-  z-index: 1000; /* Ensure the header is above other elements */
+  z-index: 1000;
 }
 
 .header-container {
@@ -33,19 +30,11 @@ header {
   justify-content: space-between;
   position: relative;
   padding-top: 15px;
+  padding-bottom: 15px;
   border-bottom: 1px solid #c8cdda;
+  max-width: 1200px;
+  margin: 0 auto;
 }
-
-.icon-container {
-  padding-left: 5px;
-  padding-right: 32px;
-  overflow: hidden; /* Esconde qualquer overflow */
-  display: flex; /* Para alinhamento correto dos ícones */
-  align-items: center; /* Alinha verticalmente os ícones */
-}
-
-
-
 
 .menu-icon {
   font-size: 24px;
@@ -74,55 +63,56 @@ header {
 .hero {
   background-color: #fff;
   color: #333;
-  padding: 70px 0 10px; /* Add top padding to compensate for fixed header */
-  text-align: center; /* Centralizar o conteúdo */
+  padding: 90px 0 10px;
+  text-align: center;
   overflow-x: hidden;
   margin-bottom: 50px;
 }
 
 .hero h1 {
-  font-size: 3rem; /* Definir tamanho da fonte como 24px */
-  margin-bottom: 10px;
+  font-size: 3.8rem; /* Ajuste do tamanho da fonte para o mobile */
   font-weight: bold;
-  line-height: 60px; /* Definir altura da linha como 32px */
+  line-height: 1.2; /* Ajuste da altura da linha para o mobile */
   text-align: left; /* Alinhar texto à esquerda */
   margin-bottom: 35px;
+  margin-top: 50px;
+  color: #1b85f4; /* Ajuste a cor do texto para azul */
+  padding-left: 10px; /* Adicionar padding à esquerda */
 }
-
 
 .hero form {
   display: flex;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
 }
 
 .hero form input {
-  padding: 12px; /* Aumentar o espaçamento interno do input */
-  font-size: 14px; /* Tamanho da fonte */
-  border: 1px solid #ccc; /* Cor da borda */
-  border-radius: 5px; /* Borda arredondada à esquerda */
-  width: 400px; /* Largura do input */
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%; /* Largura ajustada para mobile */
+  max-width: 600px;
   box-sizing: border-box;
   outline: none;
-  margin-right: 6px;
-}
-/* Remover o fundo azul do input no estado focado */
-.hero form input:focus {
-  background-color: transparent; /* Remove o fundo azul */
-  border-color: #ccc; /* Mantenha a cor da borda original */
-  outline: none; /* Remove a borda de destaque */
+  margin-right: 10px; /* Espaço entre o input e o botão */
 }
 
+.hero form input:focus {
+  background-color: transparent;
+  border-color: #ccc;
+  outline: none;
+}
 
 /* Botão de pesquisa redondo com ícone */
 #search-button {
-  padding: 12px; /* Ajuste conforme necessário */
-  font-size: 24px; /* Tamanho do ícone */
+  padding: 12px;
+  font-size: 24px;
   border: none;
-  background-color: #1b85f4; /* Cor do botão */
-  color: #fff; /* Cor do ícone */
+  background-color: #1b85f4;
+  color: #fff;
   cursor: pointer;
-  border-radius: 50%; /* Tornar o botão redondo */
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -130,9 +120,8 @@ header {
 }
 
 #search-button:hover {
-  background-color: #1a77da; /* Cor do botão ao passar o mouse */
+  background-color: #1a77da;
 }
-
 
 .features {
   background-color: #ffffff;
@@ -171,7 +160,7 @@ footer {
   overflow-x: hidden;
   text-align: center;
   padding: 20px 0;
-  border-top: 1px solid #c8cdda
+  border-top: 1px solid #c8cdda;
 }
 
 footer p {
@@ -188,29 +177,43 @@ footer p {
   color: red;
   font-weight: normal;
   overflow-x: hidden;
-
 }
 
-@media (max-width: 400px) {
-  /* .hero h1 {
-    font-size: 1.2em; /* Menor para melhor ajuste em telas pequenas */
-  } */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 
-  .hero p {
-    font-size: 14px; /* Ajustar o tamanho da fonte para 14px em telas pequenas */
+  .hero h1 {
+    font-size: 3.3rem; /* Ajustar o tamanho da fonte para telas pequenas */
+    line-height: 1.2; /* Ajustar a altura da linha para telas pequenas */
+    text-align: left; /* Alinhar texto à esquerda */
+    padding-left: 10px; /* Adicionar padding à esquerda */
+    margin-bottom: 40px;
+  }
+
+  .hero form {
+    flex-direction: row; /* Coloca o input e o botão lado a lado no mobile */
+  }
+
+  .hero form input {
+    width: calc(100% - 60px); /* Ajuste para ocupar mais espaço no mobile */
+    margin-right: 10px; /* Espaço entre input e botão */
   }
 
   .feature {
     padding: 20px;
     margin: 15px auto;
-    font-size: 16px; /* Reduzindo o tamanho da fonte nas caixas de recursos */
+    font-size: 16px;
   }
 
   .feature h2 {
-    font-size: 20px; /* Tamanho reduzido para títulos */
+    font-size: 20px;
   }
 
   .feature p {
-    font-size: 16px; /* Tamanho reduzido para texto */
+    font-size: 16px;
   }
 }
