@@ -1,26 +1,62 @@
-// BR368703360147BR
-
-const BOX_ICON = "package_2";
-const TRUCK_ICON = "local_shipping";
-const TROLLEY_ICON = "trolley";
-
-const COLOR_BLUE_ICON = "#1B85F4";
-const COLOR_RED_ICON = "#1B85F4";
-const COLOR_ORANGE_ICON = "#1B85F4";
-
-const POSTED_OBJECT = "Objeto postado";
-const IN_TRANSFER = "Objeto em transferência";
-const TROLLEY = "Chegada no centro de distribuição";
+const STAGES = [
+  {
+    icon: "package_2",
+    color: "#1B85F4",
+    title: "Objeto Postado",
+    daysAfter: 0,
+  },
+  {
+    icon: "settings",
+    color: "#1B85F4",
+    title: "Pedido em preparação",
+    daysAfter: 1,
+  },
+  {
+    icon: "local_shipping",
+    color: "#1B85F4",
+    title: "Pedido coletado pela transportadora",
+    daysAfter: 3,
+  },
+  {
+    icon: "local_shipping",
+    color: "#1B85F4",
+    title: "Pedido em transporte para o centro de distribuição",
+    daysAfter: 6,
+  },
+  {
+    icon: "inventory",
+    color: "#1B85F4",
+    title: "Pedido no centro de distribuição",
+    daysAfter: 8,
+  },
+  {
+    icon: "local_shipping",
+    color: "#1B85F4",
+    title: "Pedido em transporte para a cidade de destino",
+    daysAfter: 11,
+  },
+  {
+    icon: "place",
+    color: "#1B85F4",
+    title: "Pedido chegou a cidade destino",
+    daysAfter: 13,
+  },
+  {
+    icon: "currency_exchange",
+    color: "#1B85F4",
+    title: "Aguardando pagamento",
+    daysAfter: 15,
+  },
+];
 
 // constroi a div do icone
 function getIconCard(iconDescription, color) {
   const div = document.createElement("div");
   const icon = document.createElement("span");
 
-  div.style = "padding-left: 5px; padding-right: 32px; overflow-x: hidden;";
-
+  div.className = "icon-container"; // Adicione esta linha
   icon.className = "material-symbols-outlined";
-  icon.style = `font-size: 48px; overflow-x: hidden; color: ${color}`;
+  icon.style = `font-size: 38px; color: ${color}`;
   icon.innerText = ` ${iconDescription} `;
 
   div.appendChild(icon);
@@ -89,7 +125,7 @@ function getFormatDate(postedIn, noHour) {
   return `${day}/${month}/${year} ${hour}:${minutes}`;
 }
 
-function addDaysInDare(datein, days) {
+function addDaysInDate(datein, days) {
   const date = new Date(datein);
   date.setDate(date.getDate() + days);
   return date;
@@ -102,7 +138,6 @@ function appendCards(postedIn, city) {
 
   const today = Date.now();
 
-  // postedIn = new Date("2024-06-15 15:30");
   const timeDiff = Math.abs(today - postedIn);
 
   // quantidade de dias desde a compra
@@ -111,39 +146,13 @@ function appendCards(postedIn, city) {
   // formato da data apresentada no card
   const formatDate = getFormatDate(postedIn);
 
-  if (daysDiff === 0) {
-    setCard(BOX_ICON, COLOR_BLUE_ICON, POSTED_OBJECT, city, formatDate);
-    return;
-  }
-
-  for (let i = 0; i < daysDiff - 1; i++) {
-    // card no primeiro dia
-    if (i === 0) {
-      setCard(BOX_ICON, COLOR_BLUE_ICON, POSTED_OBJECT, city, formatDate);
-    }
-
-    // card no segundo dia
-    if (i === 1) {
-      setCard(
-        TRUCK_ICON,
-        COLOR_RED_ICON,
-        IN_TRANSFER,
-        "",
-        getFormatDate(addDaysInDare(postedIn, i), true)
-      );
-    }
-
-    // card no quarto dia
-    if (i === 3) {
-      setCard(
-        TROLLEY_ICON,
-        COLOR_ORANGE_ICON,
-        TROLLEY,
-        "",
-        getFormatDate(addDaysInDare(postedIn, i), true),
-        true
-      );
-    }
+  for (let i = 0; i < STAGES.length; i++) {
+    const stage = STAGES[i];
+    const stageDate = getFormatDate(
+      addDaysInDate(postedIn, stage.daysAfter),
+      true
+    );
+    setCard(stage.icon, stage.color, stage.title, "", stageDate);
   }
 }
 
