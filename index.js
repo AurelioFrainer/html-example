@@ -3,49 +3,49 @@ const STAGES = [
     icon: "package_2",
     color: "#1B85F4",
     title: "Objeto Postado",
-    daysAfter: 0,
+    daysAfter: 1,
   },
   {
     icon: "settings",
     color: "#1B85F4",
     title: "Pedido em preparação",
-    daysAfter: 1,
+    daysAfter: 2,
   },
   {
     icon: "local_shipping",
     color: "#1B85F4",
     title: "Pedido coletado pela transportadora",
-    daysAfter: 3,
+    daysAfter: 4,
   },
   {
     icon: "local_shipping",
     color: "#1B85F4",
     title: "Pedido em transporte para o centro de distribuição",
-    daysAfter: 6,
+    daysAfter: 7,
   },
   {
     icon: "inventory",
     color: "#1B85F4",
     title: "Pedido no centro de distribuição",
-    daysAfter: 8,
+    daysAfter: 9,
   },
   {
     icon: "local_shipping",
     color: "#1B85F4",
     title: "Pedido em transporte para a cidade de destino",
-    daysAfter: 11,
+    daysAfter: 12,
   },
   {
     icon: "place",
     color: "#1B85F4",
     title: "Pedido chegou a cidade destino",
-    daysAfter: 13,
+    daysAfter: 14,
   },
   {
     icon: "currency_exchange",
     color: "#1B85F4",
     title: "Aguardando pagamento",
-    daysAfter: 15,
+    daysAfter: 16,
   },
 ];
 
@@ -56,7 +56,7 @@ function getIconCard(iconDescription, color) {
 
   div.className = "icon-container"; // Adicione esta linha
   icon.className = "material-symbols-outlined";
-  icon.style = `font-size: 38px; color: ${color}`;
+  icon.style = `margin-right: 40px; font-size: 38px; color: ${color}`;
   icon.innerText = ` ${iconDescription} `;
 
   div.appendChild(icon);
@@ -71,10 +71,11 @@ function getInformation(title, subtitle, postedIn) {
   const divSubTitle = document.createElement("div");
   const divPostedIn = document.createElement("div");
 
+  container.className = "info-container"; // Adicione esta linha
   container.style =
     "display: flex; flex-direction: column; align-items: center; width: auto; margin-top: 15px; margin-bottom: 15px";
 
-  divTitle.style = "font-weight: 800";
+  divTitle.style = "font-weight: 800; margin-bottom: 5px;";
   divTitle.innerText = title;
 
   divSubTitle.innerText = subtitle;
@@ -99,8 +100,9 @@ function getInformation(title, subtitle, postedIn) {
 function setCard(iconDescription, iconColor, title, subtitle, postedIn) {
   const container = document.getElementById("create-cards");
   const div = document.createElement("div");
+  div.className = "card-container"; // Adicione esta linha
   div.style =
-    "display: flex; overflow-x: hidden; align-items: center; padding-top: 25px";
+    "display: flex; overflow-x: hidden; align-items: center; padding-top: 25px;";
 
   const icon = getIconCard(iconDescription, iconColor);
   const info = getInformation(title, subtitle, postedIn);
@@ -112,11 +114,11 @@ function setCard(iconDescription, iconColor, title, subtitle, postedIn) {
 }
 
 function getFormatDate(postedIn, noHour) {
-  const day = postedIn.getDate();
-  const month = postedIn.getMonth() + 1;
+  const day = String(postedIn.getDate()).padStart(2, "0");
+  const month = String(postedIn.getMonth() + 1).padStart(2, "0");
   const year = postedIn.getFullYear();
-  const hour = postedIn.getHours();
-  const minutes = postedIn.getMinutes();
+  const hour = String(postedIn.getHours()).padStart(2, "0");
+  const minutes = String(postedIn.getMinutes()).padStart(2, "0");
 
   // formato da data apresentada no card
   if (noHour) {
@@ -125,34 +127,53 @@ function getFormatDate(postedIn, noHour) {
   return `${day}/${month}/${year} ${hour}:${minutes}`;
 }
 
+function parseDate(dateString) {
+  const [day, month, year] = dateString.split("/");
+  //return new Date(`${year}-${month}-${day}`);
+  return new Date(year, month - 1, day, 0, 0);
+}
+
 function addDaysInDate(datein, days) {
   const date = new Date(datein);
   date.setDate(date.getDate() + days);
   return date;
 }
 
+function differenceInDays(initialDate, finalDate) {
+  const diffInMs = finalDate - initialDate;
+
+  const diffInSeconds = diffInMs / 1000;
+  const diffInMinutes = diffInSeconds / 60;
+  const diffInHours = diffInMinutes / 60;
+  const diffInDays = diffInHours / 24;
+
+  return diffInDays;
+}
+
 // controi todos os cards
-// postedIn = data vinda do servidor
-function appendCards(postedIn, city) {
-  postedIn = new Date(postedIn);
+function appendCards(postedIn) {
+  // Converte a data recebida do servidor para o formato correto
+  postedIn = parseDate(postedIn);
+  console.log(postedIn);
 
-  const today = Date.now();
-
-  const timeDiff = Math.abs(today - postedIn);
-
-  // quantidade de dias desde a compra
-  const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-  // formato da data apresentada no card
-  const formatDate = getFormatDate(postedIn);
-
+  // Itera sobre os estágios e define os cards
   for (let i = 0; i < STAGES.length; i++) {
     const stage = STAGES[i];
-    const stageDate = getFormatDate(
-      addDaysInDate(postedIn, stage.daysAfter),
-      true
-    );
-    setCard(stage.icon, stage.color, stage.title, "", stageDate);
+
+    let date = addDaysInDate(postedIn, stage.daysAfter);
+    if (i === 0) {
+      date = addDaysInDate(postedIn + 1, stage.daysAfter);
+    }
+    //console.log(date, postedIn);
+    const isLastStage = stage.title === "Aguardando pagamento"; // Verifica se é a última etapa
+
+    if (differenceInDays(date, new Date(Date.now())) > 0 && date < Date.now()) {
+      const stageDate = getFormatDate(
+        addDaysInDate(postedIn, stage.daysAfter),
+        true
+      );
+      setCard(stage.icon, stage.color, stage.title, "", stageDate, isLastStage);
+    }
   }
 }
 
@@ -198,3 +219,5 @@ document
       resultElement.innerText = "Erro ao obter resposta";
     }
   });
+
+document.head.appendChild(style);
