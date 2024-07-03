@@ -56,7 +56,7 @@ function getIconCard(iconDescription, color) {
 
   div.className = "icon-container"; // Adicione esta linha
   icon.className = "material-symbols-outlined";
-  icon.style = `margin-right: 40px; font-size: 38px; color: ${color}`;
+  icon.style = `margin-right: 20px; font-size: 38px; color: ${color}`;
   icon.innerText = ` ${iconDescription} `;
 
   div.appendChild(icon);
@@ -102,13 +102,17 @@ function setCard(iconDescription, iconColor, title, subtitle, postedIn) {
   const div = document.createElement("div");
   div.className = "card-container"; // Adicione esta linha
   div.style =
-    "display: flex; overflow-x: hidden; align-items: center; padding-top: 25px;";
+    "display: flex; flex-direction: column; overflow-x: hidden; align-items: start; padding-top: 25px;";
+
+  const iconDiv = document.createElement("div");
+  iconDiv.style = "display: flex; align-items: center;";
 
   const icon = getIconCard(iconDescription, iconColor);
   const info = getInformation(title, subtitle, postedIn);
   info.style = "width: 100%; overflow-x: hidden; text-align: start";
-  div.appendChild(icon);
-  div.appendChild(info);
+  iconDiv.appendChild(icon);
+  iconDiv.appendChild(info);
+  div.appendChild(iconDiv);
 
   container.appendChild(div);
 }
@@ -154,7 +158,6 @@ function differenceInDays(initialDate, finalDate) {
 function appendCards(postedIn) {
   // Converte a data recebida do servidor para o formato correto
   postedIn = parseDate(postedIn);
-  console.log(postedIn);
 
   // Itera sobre os estágios e define os cards
   for (let i = 0; i < STAGES.length; i++) {

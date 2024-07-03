@@ -215,6 +215,10 @@ footer p {
   overflow: hidden;
 }
 
+.card-container {
+  flex-direction: column;
+}
+
 @media (max-width: 768px) {
   .container {
     width: 95%;
@@ -269,5 +273,13 @@ footer p {
 
   .feature p {
     font-size: 16px;
+  }
+
+  .card-container {
+    flex-direction: column;
+  }
+
+  .card-container div {
+    width: 100%;
   }
 }
