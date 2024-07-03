@@ -75,7 +75,7 @@ function getInformation(title, subtitle, postedIn) {
   container.style =
     "display: flex; flex-direction: column; align-items: center; width: auto; margin-top: 15px; margin-bottom: 15px";
 
-  divTitle.style = "font-weight: 800; margin-bottom: 5px;";
+  divTitle.style = "font-weight: 800; margin-bottom: 5px; text-wrap: wrap;";
   divTitle.innerText = title;
 
   divSubTitle.innerText = subtitle;
