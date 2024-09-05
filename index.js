@@ -218,7 +218,6 @@ function removeContainer(container) {
 window.addEventListener("load", () => {
   // document.head.appendChild(style);
   configTrackingForm();
-  document.getElementById("tracking-information").style.display = "none";
 });
 
 function showError(inputElement, resultElement, message) {

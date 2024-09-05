@@ -276,7 +276,7 @@ footer p {
 }
 
 .tracking-information {
-  display: flex;
+  display: none;
   flex-direction: column;
   background-color: #3ebb5b;
   color: white;
