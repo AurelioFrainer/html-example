@@ -97,16 +97,48 @@ function getInformation(title, subtitle, postedIn) {
 }
 
 // constroi a div do card
-function setCard(iconDescription, iconColor, title, subtitle, postedIn) {
+function setCard(
+  iconDescription,
+  iconColor,
+  title,
+  subtitle,
+  postedIn,
+  isLastStage
+) {
   const container = document.getElementById("create-cards");
   const div = document.createElement("div");
-  div.className = "card-container"; // Adicione esta linha
+  div.className = "card-container";
   div.style =
     "display: flex; overflow-x: hidden; align-items: center; padding-top: 25px;";
 
   const icon = getIconCard(iconDescription, iconColor);
   const info = getInformation(title, subtitle, postedIn);
-  info.style = "width: 100%; overflow-x: hidden; text-align: start";
+  info.style =
+    "width: 100%; overflow-x: hidden; text-align: start; display: flex; flex-direction: column; align-items: flex-start;";
+
+  // Adicionar botão "Pagar" se for a última etapa
+  if (isLastStage) {
+    const payButton = document.createElement("button");
+    payButton.innerText = "Pagar";
+    payButton.style = `
+      background-color: #1B85F4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 09px 70px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 17px;
+      font-size: 1rem;
+      align-self: flex-start; /* Alinha o botão à esquerda */
+    `;
+    payButton.onclick = function () {
+      // Função que será executada ao clicar no botão "Pagar"
+      alert("Função de pagamento ainda não implementada.");
+    };
+    info.appendChild(payButton);
+  }
+
   div.appendChild(icon);
   div.appendChild(info);
 
@@ -154,7 +186,6 @@ function differenceInDays(initialDate, finalDate) {
 function appendCards(postedIn) {
   // Converte a data recebida do servidor para o formato correto
   postedIn = parseDate(postedIn);
-  console.log(postedIn);
 
   // Itera sobre os estágios e define os cards
   for (let i = 0; i < STAGES.length; i++) {
@@ -164,7 +195,7 @@ function appendCards(postedIn) {
     if (i === 0) {
       date = addDaysInDate(postedIn + 1, stage.daysAfter);
     }
-    //console.log(date, postedIn);
+
     const isLastStage = stage.title === "Aguardando pagamento"; // Verifica se é a última etapa
 
     if (differenceInDays(date, new Date(Date.now())) > 0 && date < Date.now()) {
@@ -184,40 +215,84 @@ function removeContainer(container) {
   }
 }
 
-document
-  .getElementById("trackingForm")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const trackingNumber = document.getElementById("tracking-number").value;
-    let resultElement = document.getElementById("tracking-result");
+window.addEventListener("load", () => {
+  // document.head.appendChild(style);
+  configTrackingForm();
+  document.getElementById("tracking-information").style.display = "none";
+});
 
-    const url =
-      "https://webhook.incaivelestrutura.com/webhook/f411fdb3-eb85-4d18-8e29-a209d485a241";
+function showError(inputElement, resultElement, message) {
+  // Adiciona a classe de erro ao input
+  inputElement.classList.add("input-error");
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ nome: trackingNumber }),
-    });
+  // Cria ou atualiza a mensagem de erro abaixo do input
+  let errorMessage = document.getElementById("error-message");
+  if (!errorMessage) {
+    errorMessage = document.createElement("div");
+    errorMessage.id = "error-message";
+    inputElement.parentNode.insertBefore(
+      errorMessage,
+      inputElement.nextSibling
+    );
+  }
+  errorMessage.className = "error-message";
+  errorMessage.innerText = message;
 
-    if (response.ok) {
-      const resultJson = await response.json();
-      const { code, data } = resultJson;
-
-      removeContainer(document.getElementById("create-cards"));
-
-      if (code !== "200") {
-        resultElement.className = "tracking-result-error";
-        resultElement.innerText = "Código inválido!";
-      } else {
-        resultElement.innerText = "";
-        appendCards(data);
-      }
-    } else {
-      resultElement.innerText = "Erro ao obter resposta";
+  // Remove o erro após 3 segundos
+  setTimeout(() => {
+    inputElement.classList.remove("input-error");
+    if (errorMessage) {
+      errorMessage.remove();
     }
-  });
+  }, 3000);
+}
 
-document.head.appendChild(style);
+function configTrackingForm() {
+  window.document
+    .getElementById("trackingForm")
+    .addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const trackingNumber = document.getElementById("tracking-number").value;
+      let resultElement = document.getElementById("tracking-result");
+
+      const url =
+        "https://webhook.incaivelestrutura.com/webhook/f411fdb3-eb85-4d18-8e29-a209d485a241";
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nome: trackingNumber }),
+      });
+
+      if (response.ok) {
+        const resultJson = await response.json();
+        const { code, data, nome, cpf, trackingCode } = resultJson;
+
+        removeContainer(document.getElementById("create-cards"));
+
+        if (code !== "200") {
+          resultElement.className = "tracking-result-error";
+          resultElement.innerText = "Código inválido!";
+        } else {
+          resultElement.innerText = "";
+          document.getElementById("tracking-information").style.display =
+            "flex";
+          const trackingName = document.getElementById("tracking-name");
+          const trackingCpf = document.getElementById("tracking-cpf");
+          const trackCode = document.getElementById("tracking-code");
+
+          // Formata e exibe as informações
+          trackingName.innerText = `Nome: ${nome}`;
+          trackingCpf.innerText = `CPF: ${cpf}`;
+          trackCode.innerText = `${trackingCode}`;
+
+          appendCards(data);
+        }
+      } else {
+        resultElement.innerText = "Erro ao obter resposta";
+      }
+    });
+}

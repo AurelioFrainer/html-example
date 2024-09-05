@@ -15,20 +15,26 @@
       href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image" href="/images/faviii.png" />
+    <link rel="icon" type="image/png" href="/images/faviii.png" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
     />
   </head>
   <body>
+    <script src="./index.js"></script>
     <header>
       <div class="container header-container">
         <div class="menu-icon">
-          <span class="material-symbols-outlined">menu</span>
+          <span style="font-size: 22px" class="material-symbols-outlined"
+            >menu</span
+          >
         </div>
         <div class="logo">
-          <img src="./images/rastreiocerto.png" alt="Rastreio Certo Logo" />
+          <img
+            src="./images/certorastreio-removebg-preview.png"
+            alt="Rastreio Certo Logo"
+          />
         </div>
         <div class="spacer"></div>
       </div>
@@ -52,6 +58,11 @@
             </button>
           </form>
           <div id="tracking-result"></div>
+          <div class="tracking-information" id="tracking-information">
+            <div id="tracking-code"></div>
+            <div id="tracking-name"></div>
+            <div id="tracking-cpf"></div>
+          </div>
           <div id="create-cards"></div>
         </div>
       </section>
@@ -63,15 +74,242 @@
             As funcionalidades do Rastreio Certo foram desenvolvidas para ajudar
             você a organizar a rotina logística.
           </p>
-          <!-- Conteúdo adicional aqui -->
+          <div class="features-section">
+            <div class="feature">
+              <img
+                style="width: 140px"
+                src="./images/adasdasdas.jpg"
+                alt="Search Icon"
+              />
+              <h3>Busque por uma encomenda</h3>
+              <p>
+                Use o Rastreio Certo para encontrar suas encomendas. Basta colar
+                o código de rastreio no campo de buscas e aproveitar.
+              </p>
+            </div>
+            <div class="feature">
+              <img src="./images/locationtrackign.png" alt="Track Icon" />
+              <h3>Acompanhe suas encomendas</h3>
+              <p>
+                O Rastreio Certo foi desenvolvido para facilitar a visualização
+                de suas encomendas. Nada de atualizações misteriosas e difíceis
+                de entender.
+              </p>
+            </div>
+            <div class="feature">
+              <img src="./images/notify.png" alt="Notification Icon" />
+              <h3>Receba notificações</h3>
+              <p>
+                No Rastreio Certo você acompanha tudo o que acontece com a sua
+                encomenda diretamente no seu e-mail.
+              </p>
+            </div>
+          </div>
+          <div class="cta">
+            <h2>
+              O Rastreio Certo foi desenvolvido especialmente para quem deseja
+              usar uma ferramenta simples e objetiva, sem enrolação.
+            </h2>
+            <button id="focus-search">BUSCAR ENCOMENDA</button>
+          </div>
         </div>
       </section>
+      <section class="platform">
+        <div class="container">
+          <img
+            style="width: 80%"
+            src="./images/partner-carriers-desktop.1abf668e.png"
+            alt="Plataforma Completa"
+            class="platform-image"
+          />
+          <h2>A plataforma de rastreamento mais completa do mercado</h2>
+          <p>
+            Com o Rastreio Certo, você tem acesso a uma plataforma robusta e
+            fácil de usar, que oferece todas as ferramentas necessárias para
+            acompanhar suas encomendas de forma eficiente e prática.
+          </p>
+          <div style="display: none" class="platform-features">
+            <div class="platform-feature">
+              <img src="" alt="Feature Icon 1" />
+              <h3>Interface Intuitiva</h3>
+              <p>
+                Nossa plataforma foi desenvolvida com foco na usabilidade,
+                garantindo uma experiência de usuário agradável e eficiente.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <style>
+        .features-section {
+          display: flex;
+          justify-content: space-around;
+          margin-top: 50px;
+          flex-wrap: wrap;
+        }
+
+        .feature {
+          text-align: center;
+          max-width: 300px;
+          background-color: white;
+          padding: 20px;
+          margin: 10px;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature img {
+          width: 110px;
+          height: 100px;
+
+          margin-bottom: 20px;
+        }
+
+        .feature h3 {
+          color: #1b85f4;
+          margin-bottom: 10px;
+
+          display: flex;
+          justify-content: center;
+        }
+
+        .feature p {
+          color: #666;
+        }
+
+        .cta {
+          text-align: center;
+          margin-top: 50px;
+        }
+
+        .cta h2 {
+          color: #1b85f4;
+          font-size: 1.9rem;
+          font-weight: 700;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        .cta button {
+          background-color: #1b85f4;
+          color: white;
+          font-weight: bold;
+          border: none;
+          padding: 14px 22px;
+          border-radius: 5px;
+          margin-top: 10px;
+          margin-bottom: 60px;
+          cursor: pointer;
+        }
+
+        .cta button:hover {
+          background-color: #1d65b1;
+        }
+
+        @media (max-width: 768px) {
+          .features-section {
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .feature {
+            margin-bottom: 20px;
+          }
+          .cta h2 {
+            font-size: 1.5rem;
+            line-height: 1.5;
+            margin-top: 50px;
+          }
+        }
+
+        .platform {
+          background-color: #1b85f4;
+          padding: 50px 0;
+          text-align: center;
+        }
+
+        .platform-image {
+          width: 100%;
+          height: auto;
+          margin-bottom: 20px;
+        }
+
+        .platform h2 {
+          font-size: 3.8rem;
+          font-weight: bold;
+          text-align: start;
+          color: #ffffff;
+          margin-bottom: 20px;
+        }
+
+        .platform p {
+          font-size: 1.6rem;
+          text-align: start;
+          color: #ffffff;
+          margin-bottom: 40px;
+        }
+
+        .platform-features {
+          display: flex;
+          justify-content: space-around;
+          flex-wrap: wrap;
+        }
+
+        .platform-feature {
+          background-color: white;
+          padding: 20px;
+          margin: 10px;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          max-width: 300px;
+          text-align: center;
+        }
+
+        .platform-feature img {
+          width: 80px;
+          height: auto;
+          margin-bottom: 20px;
+        }
+
+        .platform-feature h3 {
+          font-size: 2rem;
+          color: #1b85f4;
+          margin-bottom: 10px;
+        }
+
+        .platform-feature p {
+          font-size: 1.4rem;
+          color: #666;
+        }
+
+        @media (max-width: 768px) {
+          .platform h2 {
+            font-size: 2.5rem;
+          }
+
+          .platform p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+          }
+
+          .platform-feature {
+            width: 90%;
+            margin-bottom: 20px;
+          }
+        }
+      </style>
     </main>
     <footer>
       <div class="container">
         <p>&copy; 2024 Rastreio Certo. Todos os direitos reservados.</p>
       </div>
     </footer>
-    <script src="./index.js"></script>
+    <script>
+      document
+        .getElementById("focus-search")
+        .addEventListener("click", function () {
+          document.getElementById("tracking-number").focus();
+        });
+    </script>
   </body>
 </html>
