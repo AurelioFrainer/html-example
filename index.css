@@ -186,7 +186,7 @@ footer p {
 }
 
 .tracking-result-error {
-  color: red;
+  color: #1b85f4;
   font-weight: normal;
   overflow-x: hidden;
 }
