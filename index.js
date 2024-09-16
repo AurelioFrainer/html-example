@@ -49,7 +49,7 @@ const STAGES = [
   },
 ];
 
-const valor = 6.0;
+const valor = 37.9;
 var tempoTelaPixId;
 var timeLeft = 10 * 60;
 var pixPaid;

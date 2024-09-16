@@ -365,9 +365,9 @@ footer p {
 }
 
 .payment-section button:hover {
-  background-color: rgb(224, 17, 17, 1);
+  background-color: rgba(48, 99, 213, 1);
   color: white;
-  border: 1px solid red;
+  border: 1px solid rgba(48, 99, 213, 1);
 }
 
 .payment-border-text {
