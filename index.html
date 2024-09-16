@@ -40,7 +40,7 @@
       </div>
     </header>
     <main>
-      <section class="hero">
+      <section id="hero" class="hero">
         <div class="container" id="header-container">
           <h1>Rastreie suas encomendas gratuitamente</h1>
           <form id="trackingForm">
@@ -66,7 +66,7 @@
           <div id="create-cards"></div>
         </div>
       </section>
-      <section class="features">
+      <section id="features" class="features">
         <div class="container">
           <img width="100%" src="./images/3903814.jpg" alt="Cidade" />
           <h2>Veja como o Rastreio Certo pode facilitar sua rotina</h2>
@@ -114,7 +114,7 @@
           </div>
         </div>
       </section>
-      <section class="platform">
+      <section id="platform" class="platform">
         <div class="container">
           <img
             style="width: 80%"
@@ -140,6 +140,104 @@
           </div>
         </div>
       </section>
+      <div id="checkout" class="pix-container">
+        <!-- area do pix -->
+        <div id="pixFinalInformation" class="payment-option payment-section">
+          <h1 style="display: flex; justify-content: center">Quase lá...</h1>
+          <h2 style="text-align: center">
+            Pague seu PIX dentro de
+            <span id="countdown" style="font-weight: bold">10:00</span> minutos
+            para garantir sua compra
+          </h2>
+          <div class="payment-border-text">
+            O nome do favorecido do PIX é PAGBLUE. Esse é o nome da nossa
+            empresa recebedora do pagamento.
+          </div>
+          <input
+            style="margin-top: 25px; margin-bottom: 20px; padding-block: 8px"
+            type="text"
+            id="pixCode"
+            readonly
+          />
+          <button id="copyButton" onclick="copyToClipboard()">
+            COPIAR CÓDIGO
+          </button>
+          <!-- Div para exibir a mensagem -->
+          <div id="copyMessage" style="display: none">Código copiado</div>
+          <h2
+            id="valorASerPagoPix"
+            style="display: flex; justify-content: center"
+          >
+            Valor a ser pago: R$ 99,99
+          </h2>
+          <div
+            style="
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              cursor: pointer;
+            "
+          >
+            <h3 style="margin-top: 35px; color: #555">
+              Instruções para pagamento
+            </h3>
+            <span
+              class="material-symbols-outlined"
+              style="rotate: 180deg; margin-bottom: 15px"
+            >
+              keyboard_arrow_up
+            </span>
+          </div>
+          <div style="width: 100%; border-top: 2px solid #ccc"></div>
+          <div style="margin-top: 25px">
+            <div
+              style="display: flex; align-items: center; margin-bottom: 15px"
+            >
+              <span
+                class="material-symbols-outlined material-red-white"
+                style="padding: 10px; border-radius: 50px"
+              >
+                copy_all
+              </span>
+              <div style="margin-left: 15px">
+                Após copiar o código, abra seu aplicativo de pagamento onde você
+                utiliza o Pix.
+              </div>
+            </div>
+            <div
+              style="display: flex; align-items: center; margin-bottom: 15px"
+            >
+              <span
+                class="material-symbols-outlined material-red-white"
+                style="padding: 10px; border-radius: 50px"
+              >
+                qr_code_scanner
+              </span>
+              <div style="margin-left: 15px">
+                Escolha a opção PIX Copia e Cola e insira o código copiado.
+              </div>
+            </div>
+            <div
+              style="display: flex; align-items: center; margin-bottom: 15px"
+            >
+              <span
+                class="material-symbols-outlined material-red-white"
+                style="padding: 10px; border-radius: 50px"
+              >
+                check
+              </span>
+              <div style="margin-left: 15px">
+                Confirme as informações e finalize sua compra.
+              </div>
+            </div>
+            <!-- Campo Honeypot (invisível para os usuários) -->
+            <div style="display: none">
+              <label for="honeypot">Não preencha este campo:</label>
+              <input type="text" id="honeypot" name="honeypot" value="" />
+            </div>
+          </div>
+        </div>
+      </div>
       <style>
         .features-section {
           display: flex;
@@ -304,12 +402,5 @@
         <p>&copy; 2024 Rastreio Certo. Todos os direitos reservados.</p>
       </div>
     </footer>
-    <script>
-      document
-        .getElementById("focus-search")
-        .addEventListener("click", function () {
-          document.getElementById("tracking-number").focus();
-        });
-    </script>
   </body>
 </html>
